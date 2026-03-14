@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Cyberbullying Detection AI</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<!-- NAVIGATION BAR -->
+
+<div class="navbar">
+
+<div class="nav-left">
+
+<img src="{{ url_for('static', filename='logo.jpeg') }}" class="nav-logo">
+
+<div class="nav-title">
+CYBERSHIELD - A Cyberbullying Detection System
+</div>
+
+</div>
+
+<div class="nav-links">
+
+{% if session["role"] == "admin" %}
+<a href="/dashboard">Admin Dashboard</a>
+{% endif %}
+
+{% if session["role"] == "user" %}
+<a href="/my_history">My History</a>
+{% endif %}
+
+<a href="/logout" class="logout">Logout</a>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<h1>Cyberbullying Detection Platform</h1>
+<p class="subtitle">CYBERSHIELD - A Cyberbullying Detection System</p>
+
+<!-- COMMENT ANALYZER -->
+
+<form method="POST">
+
+<input type="text"
+id="messageInput"
+name="message"
+placeholder="Type a comment here..."
+required>
+
+<p id="warning"></p>
+
+<button type="submit">Analyze Comment 🤖</button>
+
+</form>
+
+{% if result %}
+
+<div class="analysis">
+
+<h2>{{ result }}</h2>
+<p><b>Category:</b> {{ category }}</p>
+<p><b>Sentiment:</b> {{ sentiment }}</p>
+<p><b>Toxicity Score:</b> {{ score }}%</p>
+<p><b>Risk Level:</b> {{ risk_level }}</p>
+
+<p><b>Model Confidence:</b> {{ confidence }}%</p>
+
+<p><b>Recommended Action:</b> {{ recommendation }}</p>
+
+<div class="progress">
+<div class="bar {{bar_class}}" style="width: {{score}}%"></div>
+</div>
+
+<p><b>Analyzed Comment:</b></p>
+
+<p class="comment">{{ highlighted_text | safe }}</p>
+
+<h3>Reason for Detection</h3>
+
+<ul>
+{% for r in reasons %}
+<li>{{ r }}</li>
+{% endfor %}
+</ul>
+
+</div>
+
+{% endif %}
+
+<p class="footer">
+Built with NLP & Machine Learning
+</p>
+
+<!-- USER PERSONAL HISTORY PREVIEW -->
+
+{% if session["role"] == "user" %}
+
+<div class="activity">
+
+<h3>My Recent Comments</h3>
+
+{% for act in activities %}
+
+<p>
+{{act[1]}} | {{act[2]}} | {{act[3]}} | Score: {{act[4]}}%
+</p>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+<!-- ========================= -->
+
+<!-- COMMUNITY CHAT SECTION -->
+
+<!-- ========================= -->
+
+<div class="chat-box">
+
+<h3>Community Chat</h3>
+
+<div class="chat-messages">
+
+{% for msg in chat_messages %}
+
+<div class="chat-message">
+
+<b>{{msg[0]}}</b> ({{msg[2]}}): {{msg[1]}}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<form method="POST" action="/chat">
+
+<input
+type="text"
+name="chat_message"
+placeholder="Type message..."
+required>
+
+<button type="submit">Send</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

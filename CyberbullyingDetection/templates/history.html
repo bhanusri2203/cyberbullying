@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>My Comment History</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="history-container">
+
+<h1 class="history-title">My Comment History</h1>
+
+<table class="history-table">
+
+<tr>
+<th>Time</th>
+<th>Message</th>
+<th>Result</th>
+<th>Score</th>
+</tr>
+
+{% for h in history %}
+
+<tr>
+
+<td>{{h[1]}}</td>
+<td>{{h[2]}}</td>
+
+<td>
+
+{% if h[3] == "Safe Message" %}
+
+<span class="safe">{{h[3]}}</span>
+
+{% else %}
+
+<span class="toxic">{{h[3]}}</span>
+
+{% endif %}
+
+</td>
+
+<td>{{h[4]}}%</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<div class="history-nav">
+
+<a href="/">Back to Detection</a>
+
+<a href="/logout">Logout</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
